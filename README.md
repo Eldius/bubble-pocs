@@ -12,6 +12,8 @@ A project to try to study bubble tea TUI library.
 
 ## some useful APIs to interact ##
 
+- [Powerful Minecraft APIs](https://api.minetools.eu/)
+
 - [CoinDesk - Public APIs](https://publicapis.io/coin-desk-api)
 
 ```shell
