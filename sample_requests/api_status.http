@@ -1,0 +1,9 @@
+POST https://api.minecraftservices.com/minecraft/profile/lookup/bulk/byname
+Content-Type: application/json
+Accept: application/json
+
+[
+  "Eldius",
+  "foo",
+  "bar"
+]

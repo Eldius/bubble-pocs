@@ -1,12 +1,13 @@
 package cmd
 
 import (
+	"fmt"
+	"github.com/eldius/bubble-pocs/internal/config"
+	"github.com/spf13/viper"
 	"os"
 
 	"github.com/spf13/cobra"
 )
-
-
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -21,7 +22,14 @@ to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
+	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		return config.Setup(cfgFile)
+	},
 }
+
+var (
+	cfgFile string
+)
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
@@ -41,7 +49,13 @@ func init() {
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	//rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.curseforge-client-go.yaml)")
+
+	rootCmd.PersistentFlags().Bool("debug", false, "Enable debug log")
+	if err := viper.BindPFlag(config.DebugEnabled, rootCmd.PersistentFlags().Lookup("debug")); err != nil {
+		err = fmt.Errorf("binding debug parameter: %w", err)
+		panic(err)
+	}
 }
-
-
