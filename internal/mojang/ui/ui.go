@@ -35,7 +35,7 @@ func (u usersModel) View() string {
 	msg := "---\n"
 	for i, user := range u.users {
 		if i == u.curr {
-			msg += fmt.Sprintf("-> %s\n", user.Name)
+			msg += fmt.Sprintf("-> %s\t\t(%s)\n", user.Name, user.ID)
 		} else {
 			msg += fmt.Sprintf("-  %s\n", user.Name)
 		}
@@ -64,6 +64,8 @@ func (u usersModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				u.curr++
 			}
 			return u, nil
+		case "enter":
+			return u, tea.Quit
 		}
 	case mojang.MojangUsers:
 		u.users = msg.(mojang.MojangUsers)
@@ -76,7 +78,13 @@ func Start(params ...string) {
 	p := tea.NewProgram(
 		newUsersModel(params...),
 	)
-	if _, err := p.Run(); err != nil {
+	m, err := p.Run()
+	if err != nil {
 		panic(err)
+	}
+
+	if m, ok := m.(usersModel); ok {
+		u := m.users[m.curr]
+		fmt.Printf(" => selected user: %s (%s)\n\n", u.Name, u.ID)
 	}
 }

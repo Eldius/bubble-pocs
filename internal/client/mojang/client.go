@@ -15,7 +15,7 @@ type Mojang struct {
 type MojangUsers []MojangUser
 
 type MojangUser struct {
-	Id   string `json:"id"`
+	ID   string `json:"id"`
 	Name string `json:"name"`
 }
 
