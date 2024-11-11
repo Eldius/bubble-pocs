@@ -1,4 +1,4 @@
-package ui
+package mojang
 
 import (
 	"fmt"

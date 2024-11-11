@@ -4,3 +4,6 @@ run:
 
 users:
 	go run ./cmd/tui users Eldius foo bar
+
+users-styled:
+	go run ./cmd/tui users Eldius foo bar --styled

@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/eldius/bubble-pocs/internal/config"
+	cfg "github.com/eldius/initial-config-go/configs"
 	"github.com/spf13/viper"
 	"os"
 
@@ -18,7 +19,14 @@ var rootCmd = &cobra.Command{
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-		return config.Setup(cfgFile)
+		return cfg.InitSetup("tui-pocs",
+			cfg.WithDefaultCfgFileName("config"),
+			cfg.WithConfigFileToBeUsed(cfgFile),
+			cfg.WithDefaultCfgFileLocations("~/.tui-client", "."),
+			cfg.WithDefaultValues(map[string]any{
+				cfg.LogLevelKey:      cfg.LogLevelDEBUG,
+				cfg.LogOutputFileKey: "execution.log",
+			}))
 	},
 }
 
@@ -36,7 +44,7 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.curseforge-client-go.yaml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.tui-client/config.yaml)")
 
 	rootCmd.PersistentFlags().Bool("debug", false, "Enable debug log")
 	if err := viper.BindPFlag(config.DebugEnabled, rootCmd.PersistentFlags().Lookup("debug")); err != nil {
