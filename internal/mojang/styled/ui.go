@@ -5,18 +5,24 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/eldius/bubble-pocs/internal/client/mojang"
+	"strings"
 )
 
 var (
 	defaultStyle = lipgloss.NewStyle().
-			Bold(true).
+			Bold(false).
 			Foreground(lipgloss.Color("#FAFAFA")).
 			Background(lipgloss.Color("#000000"))
 
-	activeCursorStyle = lipgloss.NewStyle().
-				Bold(true).
-				Foreground(lipgloss.Color("#03fc03")).
-				Background(lipgloss.Color("#7f8085"))
+	activeCurrStyle = lipgloss.NewStyle().
+			Bold(true).
+			Foreground(lipgloss.Color("#03fc03")).
+			Background(lipgloss.Color("#7f8085"))
+
+	resultBoxStyle = lipgloss.NewStyle().
+			Bold(false).
+			Foreground(lipgloss.Color("#c40629")).
+			Background(lipgloss.Color("#7f8085"))
 )
 
 type usersModel struct {
@@ -45,10 +51,10 @@ func (u usersModel) Init() tea.Cmd {
 }
 
 func (u usersModel) View() string {
-	msg := "---\n"
+	msg := defaultStyle.Render("---") + "\n"
 	for i, user := range u.users {
 		if i == u.curr {
-			msg += activeCursorStyle.Render(fmt.Sprintf("-> %s\t\t(%s)", user.Name, user.ID)) + "\n"
+			msg += activeCurrStyle.Render(fmt.Sprintf("-  %s\t\t(%s)", user.Name, user.ID)) + "\n"
 		} else {
 			msg += defaultStyle.Render(fmt.Sprintf("-  %s", user.Name)) + "\n"
 		}
@@ -60,7 +66,6 @@ func (u usersModel) View() string {
 func (u usersModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg.(type) {
 	case tea.KeyMsg:
-		//fmt.Println(msg.(tea.KeyMsg).String())
 		switch msg.(tea.KeyMsg).String() {
 		case "ctrl+c":
 			return u, tea.Quit
@@ -97,6 +102,15 @@ func Start(params ...string) {
 
 	if m, ok := m.(usersModel); ok {
 		u := m.users[m.curr]
-		fmt.Printf(" => selected user: %s (%s)\n\n", u.Name, u.ID)
+
+		// ##########
+		// # 123456 #
+		// ##########
+
+		out := fmt.Sprintf(" => selected user: %s (%s)", u.Name, u.ID)
+		fmt.Print("\n\n")
+		fmt.Println(resultBoxStyle.Render(strings.Repeat("#", len(out)+4)))
+		fmt.Println(resultBoxStyle.Render(fmt.Sprintf("# %s #", out)))
+		fmt.Println(resultBoxStyle.Render(strings.Repeat("#", len(out)+4)) + "\n")
 	}
 }
