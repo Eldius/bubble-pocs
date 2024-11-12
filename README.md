@@ -8,6 +8,7 @@ A project to try to study bubble tea TUI library.
 - [Intro to Bubble Tea in Go - Andy Haskell](https://dev.to/andyhaskell/intro-to-bubble-tea-in-go-21lg)
 - [Building UI of Golang CLI app with Bubble Tea - Vladimir Dulenov](https://medium.com/@originalrad50/building-ui-of-golang-cli-app-with-bubble-tea-68b61e25445e)
 - [I don't get Bubbletea - Reddit](https://www.reddit.com/r/golang/comments/xvrhow/i_dont_get_bubbletea/)
+- [Views - Bubble Tea examples - Github](https://github.com/charmbracelet/bubbletea/blob/main/examples/views/main.go)
 
 
 ## some useful APIs to interact ##
