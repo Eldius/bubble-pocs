@@ -4,30 +4,12 @@ import (
 	"fmt"
 	"github.com/charmbracelet/bubbles/paginator"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
 	"github.com/eldius/bubble-pocs/internal/client/purpur"
 	"log/slog"
 	"strings"
 )
 
-var (
-	errorStyle = lipgloss.NewStyle().
-			Bold(true).
-			Foreground(lipgloss.Color("#0a0100")).
-			Background(lipgloss.Color("#eb4034"))
-
-	defaultStyle = lipgloss.NewStyle().
-			Bold(false).
-			Foreground(lipgloss.Color("#FAFAFA")).
-			Background(lipgloss.Color("#000000"))
-
-	activeCurrStyle = lipgloss.NewStyle().
-			Bold(true).
-			Foreground(lipgloss.Color("#03fc03")).
-			Background(lipgloss.Color("#7f8085"))
-)
-
-type mineVer struct {
+type VersionInfo struct {
 	ver    string
 	latest bool
 }
@@ -44,7 +26,7 @@ type mineVersionsModel struct {
 	c    *purpur.Client
 
 	paginated    paginator.Model
-	mineVersList []mineVer
+	mineVersList []VersionInfo
 }
 
 func newModel() *mineVersionsModel {
@@ -85,15 +67,15 @@ func (m *mineVersionsModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.curr = m.curr + 1
 			}
 		case "enter":
-			return m, tea.Quit
+			return newPurpurVersionsModel(m.c, m.SelectedVersion()), nil
 		}
 
 	case *purpur.GetMinecraftVersionsResponse:
 		msg.SortVersions()
-		var versions []mineVer
+		var versions []VersionInfo
 		for _, v := range msg.Versions {
 			slog.With("ver", v).Debug("oneMoreVersion")
-			versions = append(versions, mineVer{
+			versions = append(versions, VersionInfo{
 				ver:    v,
 				latest: v == msg.Metadata.Current,
 			})
@@ -107,10 +89,10 @@ func (m *mineVersionsModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func updateVersions(m *mineVersionsModel, msg *purpur.GetMinecraftVersionsResponse) (tea.Model, tea.Cmd) {
-	var versions []mineVer
+	var versions []VersionInfo
 	for _, v := range msg.Versions {
 		slog.With("ver", v).Debug("oneMoreVersion")
-		versions = append(versions, mineVer{
+		versions = append(versions, VersionInfo{
 			ver:    v,
 			latest: v == msg.Metadata.Current,
 		})
@@ -126,16 +108,9 @@ func (m *mineVersionsModel) View() string {
 		return m.msg
 	}
 	if m.err != nil {
-		msg := m.err.Error()
-		bar := "\t" + strings.Repeat("#", len(msg)+4) + "\t"
-		msg = fmt.Sprintf("\t# %s #\t", msg)
-		return fmt.Sprintf(`
-%s
-%s
-%s
-
-`, errorStyle.Render(bar), errorStyle.Render(msg), errorStyle.Render(bar))
+		return displayErrorDetails(m.err)
 	}
+
 	var b strings.Builder
 	b.WriteString("\n  Select mine version\n\n")
 	start, end := m.paginated.GetSliceBounds(len(m.mineVersList))

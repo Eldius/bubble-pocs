@@ -30,3 +30,30 @@ func (r *GetMinecraftVersionsResponse) AllVersions() iter.Seq[string] {
 		}
 	}
 }
+
+type GetPurpurVersionsResponse struct {
+	Project string          `json:"project"`
+	Version string          `json:"version"`
+	Builds  GetPurpurBuilds `json:"builds"`
+}
+
+type GetPurpurBuilds struct {
+	Latest string   `json:"latest"`
+	All    []string `json:"all"`
+}
+
+func (r *GetPurpurVersionsResponse) SortVersions() {
+	sort.Slice(r.Builds.All[:], func(i, j int) bool {
+		return r.Builds.All[i] > r.Builds.All[j]
+	})
+}
+
+func (r *GetPurpurVersionsResponse) AllVersions() iter.Seq[string] {
+	return func(yield func(string) bool) {
+		for _, version := range r.Builds.All {
+			if !yield(version) {
+				return
+			}
+		}
+	}
+}

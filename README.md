@@ -15,6 +15,7 @@ A project to try to study bubble tea TUI library.
 - [Mojang API](https://wiki.vg/Mojang_API)
 - [Powerful Minecraft APIs](https://api.minetools.eu/)
 - [CoinDesk - Public APIs](https://publicapis.io/coin-desk-api)
+- [Purpur Minecraft Server Versions](https://purpurmc.org/docs/purpur/)
 
 ```shell
 curl https://api.coindesk.com/v1/bpi/currentprice/BRL.json | jq .
