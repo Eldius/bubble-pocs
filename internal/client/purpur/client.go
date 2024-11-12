@@ -38,18 +38,26 @@ func (c *Client) GetMinecraftVesions() (*GetMinecraftVersionsResponse, error) {
 	return parseGetMineVersionsResponse(b, res.StatusCode)
 }
 
-func (c *Client) GetBuildsByMineVersion(ver string) (*GetPurpurVersionsResponse, error) {
-	res, err := c.c.Get("https://api.purpurmc.org/v2/" + ver)
+func (c *Client) GetPurpurBuildsByMineVersion(ver string) (*GetPurpurVersionsResponse, error) {
+	url := "https://api.purpurmc.org/v2/purpur/" + ver
+	log := slog.With(slog.String("url", url))
+	res, err := c.c.Get(url)
 	if err != nil {
 		return nil, fmt.Errorf("getting purpur builds for ver %s: %v", ver, err)
 	}
 	defer func() {
 		_ = res.Body.Close()
 	}()
+	b, err := io.ReadAll(res.Body)
+	if config.GetDebug() {
+		log.With(
+			slog.String("body", string(b)),
+			slog.Int("status_code", res.StatusCode),
+		).Debug("GetPurpurBuildsByMineVersion")
+	}
 	if res.StatusCode/100 != 2 {
 		return nil, fmt.Errorf("getting purpur builds: %v", res.Status)
 	}
-	b, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, fmt.Errorf("reading purpur builds: %v", err)
 	}

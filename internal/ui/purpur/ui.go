@@ -30,37 +30,44 @@ func Start() error {
 	if err != nil {
 		return err
 	}
-	if m, ok := m1.(*mineVersionsModel); ok {
+	if m, ok := m1.(*purpurVersionsModel); ok {
 		if m.err != nil {
 			return err
 		}
-		msg := m.SelectedVersion()
-		if msg == "" {
-			fmt.Println("\n", defaultStyle.Render("no version selected"))
+		opts := m.GetInstallOpts()
+		if opts.MineVer == "" {
+			fmt.Println("\n", defaultStyle.Render("no Minecraft version selected"))
 			fmt.Println()
 			return nil
 		}
-		msg = "selected version: " + msg
-		bar := "\t" + strings.Repeat("#", len(msg)+4) + "\t"
-		msg = fmt.Sprintf("\t# %s #\t", msg)
+		if opts.PurpurVer == "" {
+			fmt.Println("\n", defaultStyle.Render("no Purpur version selected"))
+			fmt.Println()
+			return nil
+		}
+		msgMineVer := "Minecraft selected version: " + opts.MineVer
+
+		msgPurpurVer := "Purpur selected version:  " + opts.PurpurVer
+
+		mineMsgLength := len(msgMineVer)
+		purpurMsgLength := len(msgPurpurVer)
+
+		boxSize := mineMsgLength
+		if boxSize < purpurMsgLength {
+			boxSize = purpurMsgLength
+		}
+
+		msgMineVer = fmt.Sprintf("\t# %s #\t", msgMineVer+strings.Repeat(" ", boxSize-mineMsgLength))
+		msgPurpurVer = fmt.Sprintf("\t# %s #\t", msgPurpurVer+strings.Repeat(" ", boxSize-purpurMsgLength))
+
+		bar := "\t" + strings.Repeat("#", boxSize+4) + "\t"
 		fmt.Println("\n",
 			defaultStyle.Render(bar), "\n",
-			defaultStyle.Render(msg), "\n",
+			defaultStyle.Render(msgMineVer), "\n",
+			defaultStyle.Render(msgPurpurVer), "\n",
 			defaultStyle.Render(bar))
 		fmt.Println()
 		fmt.Println()
 	}
 	return nil
-}
-
-func displayErrorDetails(err error) string {
-	msg := err.Error()
-	bar := "\t" + strings.Repeat("#", len(msg)+4) + "\t"
-	msg = fmt.Sprintf("\t# %s #\t", msg)
-	return fmt.Sprintf(`
-%s
-%s
-%s
-
-`, errorStyle.Render(bar), errorStyle.Render(msg), errorStyle.Render(bar))
 }
