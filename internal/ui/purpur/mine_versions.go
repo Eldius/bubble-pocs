@@ -67,7 +67,7 @@ func (m *mineVersionsModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.curr = m.curr + 1
 			}
 		case "enter":
-			return newPurpurVersionsModel(m.c, m.SelectedVersion()), nil
+			return newPurpurVersionsModel(m.c, m.SelectedVersion())
 		}
 
 	case *purpur.GetMinecraftVersionsResponse:
@@ -91,7 +91,6 @@ func (m *mineVersionsModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func updateVersions(m *mineVersionsModel, msg *purpur.GetMinecraftVersionsResponse) (tea.Model, tea.Cmd) {
 	var versions []VersionInfo
 	for _, v := range msg.Versions {
-		slog.With("ver", v).Debug("oneMoreVersion")
 		versions = append(versions, VersionInfo{
 			ver:    v,
 			latest: v == msg.Metadata.Current,

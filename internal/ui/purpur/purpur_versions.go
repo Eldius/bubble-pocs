@@ -5,6 +5,7 @@ import (
 	"github.com/charmbracelet/bubbles/paginator"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/eldius/bubble-pocs/internal/client/purpur"
+	"log/slog"
 	"strings"
 )
 
@@ -20,16 +21,18 @@ type purpurVersionsModel struct {
 	versList  []VersionInfo
 }
 
-func newPurpurVersionsModel(c *purpur.Client, mineVer string) *purpurVersionsModel {
+func newPurpurVersionsModel(c *purpur.Client, mineVer string) (*purpurVersionsModel, tea.Cmd) {
 	p := paginator.New(
 		paginator.WithPerPage(10),
 		paginator.WithTotalPages(0),
 	)
-	return &purpurVersionsModel{
+	slog.Debug("newPurpurVersionsModel")
+	m := &purpurVersionsModel{
 		c:         c,
 		mineVer:   mineVer,
 		paginated: p,
 	}
+	return m, nil
 }
 
 func (m *purpurVersionsModel) Init() tea.Cmd {
