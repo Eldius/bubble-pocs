@@ -23,7 +23,7 @@ func (c *Client) GetMinecraftVesions() (*GetMinecraftVersionsResponse, error) {
 
 	res, err := c.c.Get("https://api.purpurmc.org/v2/purpur/")
 	if err != nil {
-		err = fmt.Errorf("getting minecraft versions: %v", err)
+		return nil, fmt.Errorf("getting minecraft versions: %v", err)
 	}
 	defer func() {
 		_ = res.Body.Close()
@@ -41,7 +41,7 @@ func (c *Client) GetMinecraftVesions() (*GetMinecraftVersionsResponse, error) {
 func (c *Client) GetBuildsByMineVersion(ver string) (*GetPurpurVersionsResponse, error) {
 	res, err := c.c.Get("https://api.purpurmc.org/v2/" + ver)
 	if err != nil {
-		err = fmt.Errorf("getting purpur builds for ver %s: %v", ver, err)
+		return nil, fmt.Errorf("getting purpur builds for ver %s: %v", ver, err)
 	}
 	defer func() {
 		_ = res.Body.Close()

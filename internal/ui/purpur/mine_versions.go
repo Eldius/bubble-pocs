@@ -5,7 +5,6 @@ import (
 	"github.com/charmbracelet/bubbles/paginator"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/eldius/bubble-pocs/internal/client/purpur"
-	"log/slog"
 	"strings"
 )
 
@@ -72,15 +71,6 @@ func (m *mineVersionsModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case *purpur.GetMinecraftVersionsResponse:
 		msg.SortVersions()
-		var versions []VersionInfo
-		for _, v := range msg.Versions {
-			slog.With("ver", v).Debug("oneMoreVersion")
-			versions = append(versions, VersionInfo{
-				ver:    v,
-				latest: v == msg.Metadata.Current,
-			})
-		}
-
 		return updateVersions(m, msg)
 	}
 	var cmd tea.Cmd

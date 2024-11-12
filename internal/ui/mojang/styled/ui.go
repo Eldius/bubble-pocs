@@ -29,7 +29,6 @@ type usersModel struct {
 	users  mojang.MojangUsers
 	params []string
 	c      *mojang.Mojang
-	err    error
 	curr   int
 }
 
@@ -64,9 +63,9 @@ func (u usersModel) View() string {
 }
 
 func (u usersModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
-	switch msg.(type) {
+	switch msg := msg.(type) {
 	case tea.KeyMsg:
-		switch msg.(tea.KeyMsg).String() {
+		switch msg.String() {
 		case "ctrl+c":
 			return u, tea.Quit
 		case "q":
@@ -85,7 +84,7 @@ func (u usersModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return u, tea.Quit
 		}
 	case mojang.MojangUsers:
-		u.users = msg.(mojang.MojangUsers)
+		u.users = msg
 		return u, nil
 	}
 	return u, nil

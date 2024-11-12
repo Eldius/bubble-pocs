@@ -31,11 +31,13 @@ func (s simplePage) View() string {
 // UPDATE
 
 func (s simplePage) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
-	switch msg.(type) {
+	switch msg := msg.(type) {
 	case tea.KeyMsg:
-		switch msg.(tea.KeyMsg).String() {
+		switch msg.String() {
 		case "ctrl+c":
 			return s, tea.Quit
+		default:
+			return s, nil
 		}
 	}
 	return s, nil
