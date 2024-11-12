@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/eldius/bubble-pocs/internal/hello/ui"
+	"github.com/eldius/bubble-pocs/internal/ui/hello/ui"
 
 	"github.com/spf13/cobra"
 )

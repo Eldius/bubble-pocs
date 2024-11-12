@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"github.com/eldius/bubble-pocs/internal/mojang"
-	"github.com/eldius/bubble-pocs/internal/mojang/styled"
+	"github.com/eldius/bubble-pocs/internal/ui/mojang"
+	"github.com/eldius/bubble-pocs/internal/ui/mojang/styled"
 	"github.com/spf13/cobra"
 )
 
