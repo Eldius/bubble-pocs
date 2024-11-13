@@ -4,7 +4,6 @@ import (
 	"fmt"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"strings"
 )
 
 var (
@@ -45,29 +44,7 @@ func Start() error {
 			fmt.Println()
 			return nil
 		}
-		msgMineVer := "Minecraft selected version: " + opts.MineVer
-
-		msgPurpurVer := "Purpur selected version:  " + opts.PurpurVer
-
-		mineMsgLength := len(msgMineVer)
-		purpurMsgLength := len(msgPurpurVer)
-
-		boxSize := mineMsgLength
-		if boxSize < purpurMsgLength {
-			boxSize = purpurMsgLength
-		}
-
-		msgMineVer = fmt.Sprintf("\t# %s #\t", msgMineVer+strings.Repeat(" ", boxSize-mineMsgLength))
-		msgPurpurVer = fmt.Sprintf("\t# %s #\t", msgPurpurVer+strings.Repeat(" ", boxSize-purpurMsgLength))
-
-		bar := "\t" + strings.Repeat("#", boxSize+4) + "\t"
-		fmt.Println("\n",
-			defaultStyle.Render(bar), "\n",
-			defaultStyle.Render(msgMineVer), "\n",
-			defaultStyle.Render(msgPurpurVer), "\n",
-			defaultStyle.Render(bar))
-		fmt.Println()
-		fmt.Println()
+		fmt.Println(opts.String())
 	}
 	return nil
 }

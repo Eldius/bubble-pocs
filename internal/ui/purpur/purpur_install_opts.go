@@ -26,6 +26,33 @@ type InstallOpts struct {
 	PurpurVer string
 }
 
+func (o InstallOpts) String() string {
+	msgMineVer := "Minecraft selected version: " + o.MineVer
+
+	msgPurpurVer := "Purpur selected version:  " + o.PurpurVer
+
+	mineMsgLength := len(msgMineVer)
+	purpurMsgLength := len(msgPurpurVer)
+
+	boxSize := mineMsgLength
+	if boxSize < purpurMsgLength {
+		boxSize = purpurMsgLength
+	}
+
+	msgMineVer = fmt.Sprintf("\t# %s #\t", msgMineVer+strings.Repeat(" ", boxSize-mineMsgLength))
+	msgPurpurVer = fmt.Sprintf("\t# %s #\t", msgPurpurVer+strings.Repeat(" ", boxSize-purpurMsgLength))
+
+	bar := "\t" + strings.Repeat("#", boxSize+4) + "\t"
+
+	return fmt.Sprintf(`
+%s
+%s
+%s
+%s
+`, defaultStyle.Render(bar), defaultStyle.Render(msgMineVer), defaultStyle.Render(msgPurpurVer), defaultStyle.Render(bar))
+
+}
+
 func (m *purpurVersionsModel) selectedMineVersion() string {
 	return m.mineVerList[m.mineVerPaginatedModel.Page*m.mineVerPaginatedModel.PerPage+m.curr].ver
 }
