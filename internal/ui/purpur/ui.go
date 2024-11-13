@@ -4,6 +4,8 @@ import (
 	"fmt"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/eldius/bubble-pocs/internal/client/purpur"
+	"github.com/erikgeiser/promptkit/confirmation"
 )
 
 var (
@@ -24,7 +26,8 @@ var (
 )
 
 func Start() error {
-	m := newModel()
+	c := purpur.NewClient()
+	m := newModel(c)
 	m1, err := tea.NewProgram(m).Run()
 	if err != nil {
 		return err
@@ -45,6 +48,21 @@ func Start() error {
 			return nil
 		}
 		fmt.Println(opts.String())
+
+		cfbox := confirmation.New("\tDo you want to download it?", confirmation.NewValue(false))
+		answer, err := cfbox.RunPrompt()
+		if err != nil {
+			return err
+		}
+		if answer {
+			f, err := c.Download(opts.MineVer, opts.PurpurVer)
+			if err != nil {
+				err = fmt.Errorf("downloading file: %w", err)
+				return err
+			}
+
+			fmt.Printf("output file: %s\n\n\n", f)
+		}
 	}
 	return nil
 }

@@ -44,12 +44,15 @@ func (o InstallOpts) String() string {
 
 	bar := "\t" + strings.Repeat("#", boxSize+4) + "\t"
 
+	emptyLine := strings.Repeat(" ", boxSize)
 	return fmt.Sprintf(`
 %s
 %s
 %s
 %s
-`, defaultStyle.Render(bar), defaultStyle.Render(msgMineVer), defaultStyle.Render(msgPurpurVer), defaultStyle.Render(bar))
+%s
+%s
+`, emptyLine, defaultStyle.Render(bar), defaultStyle.Render(msgMineVer), defaultStyle.Render(msgPurpurVer), defaultStyle.Render(bar), emptyLine)
 
 }
 
@@ -94,8 +97,7 @@ func (m *purpurVersionsModel) isPurpurVersionScreen() bool {
 	return m.screen == purpurVersionScreen
 }
 
-func newModel() *purpurVersionsModel {
-	c := purpur.NewClient()
+func newModel(c *purpur.Client) *purpurVersionsModel {
 	pm := paginator.New(
 		paginator.WithPerPage(10),
 		paginator.WithTotalPages(0),

@@ -7,6 +7,7 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
+	"os"
 )
 
 type Client struct {
@@ -62,6 +63,46 @@ func (c *Client) GetPurpurBuildsByMineVersion(ver string) (*GetPurpurVersionsRes
 		return nil, fmt.Errorf("reading purpur builds: %v", err)
 	}
 	return parseGetPurpurVersionsResponse(b, res.StatusCode)
+}
+
+func (c *Client) Download(mineVer, purpurBuild string) (string, error) {
+	url := fmt.Sprintf("https://api.purpurmc.org/v2/purpur/%s/%s/download", mineVer, purpurBuild)
+	log := slog.With(slog.String("url", url))
+	res, err := c.c.Get(url)
+	if err != nil {
+		return "", fmt.Errorf("getting purpur package for %s-%s: %v", mineVer, purpurBuild, err)
+	}
+	defer func() {
+		_ = res.Body.Close()
+	}()
+	destDir, err := os.MkdirTemp(os.TempDir(), "downloads-*")
+	if err != nil {
+		err = fmt.Errorf("creating temp dir: %v", err)
+		return "", err
+	}
+	out, err := os.CreateTemp(destDir, fmt.Sprintf("purpur-%s-%s.jar", mineVer, purpurBuild))
+	if err != nil {
+		err = fmt.Errorf("creating temp file: %v", err)
+		return "", err
+	}
+
+	log.With(
+		slog.String("dest_name", out.Name()),
+		slog.String("dest_folder", destDir),
+		slog.Int("status_code", res.StatusCode),
+		"headers", res.Header,
+	).Debug("DownloadingPackage")
+
+	if res.StatusCode/100 != 2 {
+		return "", fmt.Errorf("getting purpur builds: %v", res.Status)
+	}
+
+	if _, err := io.Copy(out, res.Body); err != nil {
+		err = fmt.Errorf("copying package to temp file: %v", err)
+		return "", err
+	}
+
+	return out.Name(), nil
 }
 
 func parseGetMineVersionsResponse(b []byte, statusCode int) (*GetMinecraftVersionsResponse, error) {
