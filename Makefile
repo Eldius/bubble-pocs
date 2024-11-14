@@ -10,3 +10,6 @@ users-styled:
 
 purpur:
 	go run ./cmd/tui purpur --debug
+
+phone:
+	go run ./cmd/tui phone --debug
