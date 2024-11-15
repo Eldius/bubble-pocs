@@ -8,7 +8,11 @@ A project to try to study bubble tea TUI library.
 - [Intro to Bubble Tea in Go - Andy Haskell](https://dev.to/andyhaskell/intro-to-bubble-tea-in-go-21lg)
 - [Building UI of Golang CLI app with Bubble Tea - Vladimir Dulenov](https://medium.com/@originalrad50/building-ui-of-golang-cli-app-with-bubble-tea-68b61e25445e)
 - [I don't get Bubbletea - Reddit](https://www.reddit.com/r/golang/comments/xvrhow/i_dont_get_bubbletea/)
-- [Views - Bubble Tea examples - Github](https://github.com/charmbracelet/bubbletea/blob/main/examples/views/main.go)
+- [Views - Bubble Tea examples - GitHub](https://github.com/charmbracelet/bubbletea/blob/main/examples/views/main.go)
+- [bubbletea/examples/textinputs/main.go - GitHub](https://github.com/charmbracelet/bubbletea/blob/v1.2.2/examples/textinputs/main.go)
+- [Aikar's Start Script Generator tsx code - Github](https://github.com/PaperMC/docs/blob/6d98e168827d8129bc57fc2f687c559f561a560b/src/components/StartScriptGenerator.tsx)
+- [Aikar's Flags - PaperMC](https://docs.papermc.io/paper/aikars-flags)
+- [Aikar's Flags' based Startup Script Generator](https://flags.sh/)
 
 
 ## some useful APIs to interact ##
@@ -80,4 +84,11 @@ curl https://api.coindesk.com/v1/bpi/currentprice.json | jq .
     }
   }
 }
+```
+
+
+```shell
+curl -L \
+  -H "Accept: application/vnd.github+json" \
+  https://api.github.com/repos/PurpurMC/PurpurExtras/releases
 ```

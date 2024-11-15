@@ -1,4 +1,7 @@
 
+TEST_SERVER ?= 192.168.0.42
+
+
 run:
 	go run ./cmd/tui hello --debug
 
@@ -13,3 +16,19 @@ purpur:
 
 phone:
 	go run ./cmd/tui phone --debug
+
+vulncheck:
+	govulncheck ./...
+
+lint:
+	golangci-lint run
+
+snapshot-local:
+	goreleaser release --snapshot --clean
+
+release-local:
+	goreleaser release --clean --skip=publish
+
+put:
+	echo 'rm ~/.bin/bubbles' | sftp $(USER)@$(TEST_SERVER)
+	echo 'put ./dist/bubbles_linux_arm64/bubbles .bin/' | sftp $(USER)@$(TEST_SERVER)

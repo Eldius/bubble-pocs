@@ -55,7 +55,7 @@ func Start() error {
 			return err
 		}
 		if answer {
-			f, err := c.Download(opts.MineVer, opts.PurpurVer)
+			f, err := c.DownloadPurpur(opts.MineVer, opts.PurpurVer)
 			if err != nil {
 				err = fmt.Errorf("downloading file: %w", err)
 				return err

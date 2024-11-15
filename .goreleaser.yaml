@@ -16,8 +16,10 @@ before:
     - go generate ./...
 
 builds:
-  - env:
+  - id: bubbles
+    env:
       - CGO_ENABLED=0
+    binary: bubbles
     main: ./cmd/tui
     goos:
       - linux

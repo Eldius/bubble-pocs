@@ -10,6 +10,11 @@ import (
 	"os"
 )
 
+const (
+	purpurApiBaseEndpoint = "https://api.purpurmc.org/v2"
+	purpurProject         = "purpur"
+)
+
 type Client struct {
 	c *http.Client
 }
@@ -20,27 +25,61 @@ func NewClient() *Client {
 	}
 }
 
-func (c *Client) GetMinecraftVesions() (*GetMinecraftVersionsResponse, error) {
-
-	res, err := c.c.Get("https://api.purpurmc.org/v2/purpur/")
+func (c *Client) GetProjects() (*GetMinecraftVersionsResponse, error) {
+	url := purpurApiBaseEndpoint
+	log := slog.With(slog.String("url", url))
+	res, err := c.c.Get(url)
 	if err != nil {
 		return nil, fmt.Errorf("getting minecraft versions: %v", err)
 	}
 	defer func() {
 		_ = res.Body.Close()
 	}()
-	if res.StatusCode/100 != 2 {
-		return nil, fmt.Errorf("getting minecraft versions: %v", res.Status)
-	}
 	b, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, fmt.Errorf("reading minecraft versions: %v", err)
+	}
+	if config.GetDebug() {
+		log.With(
+			slog.String("body", string(b)),
+			slog.Int("status_code", res.StatusCode),
+		).Debug("GetPurpurMinecraftVesions")
+	}
+	if res.StatusCode/100 != 2 {
+		return nil, fmt.Errorf("getting minecraft versions: %v", res.Status)
+	}
+	return parseGetMineVersionsResponse(b, res.StatusCode)
+}
+
+func (c *Client) GetPurpurMinecraftVesions() (*GetMinecraftVersionsResponse, error) {
+
+	url := getProjectEndpoint(purpurProject)
+	log := slog.With(slog.String("url", url))
+	res, err := c.c.Get(url)
+	if err != nil {
+		return nil, fmt.Errorf("getting minecraft versions: %v", err)
+	}
+	defer func() {
+		_ = res.Body.Close()
+	}()
+	b, err := io.ReadAll(res.Body)
+	if err != nil {
+		return nil, fmt.Errorf("reading minecraft versions: %v", err)
+	}
+	if config.GetDebug() {
+		log.With(
+			slog.String("body", string(b)),
+			slog.Int("status_code", res.StatusCode),
+		).Debug("GetPurpurMinecraftVesions")
+	}
+	if res.StatusCode/100 != 2 {
+		return nil, fmt.Errorf("getting minecraft versions: %v", res.Status)
 	}
 	return parseGetMineVersionsResponse(b, res.StatusCode)
 }
 
 func (c *Client) GetPurpurBuildsByMineVersion(ver string) (*GetPurpurVersionsResponse, error) {
-	url := "https://api.purpurmc.org/v2/purpur/" + ver
+	url := fmt.Sprintf("%s/%s", getProjectEndpoint(purpurProject), ver)
 	log := slog.With(slog.String("url", url))
 	res, err := c.c.Get(url)
 	if err != nil {
@@ -65,8 +104,8 @@ func (c *Client) GetPurpurBuildsByMineVersion(ver string) (*GetPurpurVersionsRes
 	return parseGetPurpurVersionsResponse(b, res.StatusCode)
 }
 
-func (c *Client) Download(mineVer, purpurBuild string) (string, error) {
-	url := fmt.Sprintf("https://api.purpurmc.org/v2/purpur/%s/%s/download", mineVer, purpurBuild)
+func (c *Client) DownloadPurpur(mineVer, purpurBuild string) (string, error) {
+	url := fmt.Sprintf("%s/%s/%s/download", getProjectEndpoint(purpurProject), mineVer, purpurBuild)
 	log := slog.With(slog.String("url", url))
 	res, err := c.c.Get(url)
 	if err != nil {
@@ -131,4 +170,8 @@ func parseGetPurpurVersionsResponse(b []byte, statusCode int) (*GetPurpurVersion
 		return nil, fmt.Errorf("decoding minecraft versions: %v", err)
 	}
 	return &versionsRes, nil
+}
+
+func getProjectEndpoint(project string) string {
+	return purpurApiBaseEndpoint + "/" + project
 }

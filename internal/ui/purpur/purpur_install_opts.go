@@ -301,7 +301,7 @@ func (m *purpurVersionsModel) viewPurpurVerScreen() string {
 
 func fetchMineVers(m *purpurVersionsModel) tea.Cmd {
 	return func() tea.Msg {
-		res, err := m.c.GetMinecraftVesions()
+		res, err := m.c.GetPurpurMinecraftVesions()
 		if err != nil {
 			return err
 		}
