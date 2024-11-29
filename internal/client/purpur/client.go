@@ -8,6 +8,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"path/filepath"
 )
 
 const (
@@ -104,7 +105,7 @@ func (c *Client) GetPurpurBuildsByMineVersion(ver string) (*GetPurpurVersionsRes
 	return parseGetPurpurVersionsResponse(b, res.StatusCode)
 }
 
-func (c *Client) DownloadPurpur(mineVer, purpurBuild string) (string, error) {
+func (c *Client) DownloadPurpur(mineVer, purpurBuild, destDir string) (string, error) {
 	url := fmt.Sprintf("%s/%s/%s/download", getProjectEndpoint(purpurProject), mineVer, purpurBuild)
 	log := slog.With(slog.String("url", url))
 	res, err := c.c.Get(url)
@@ -114,12 +115,9 @@ func (c *Client) DownloadPurpur(mineVer, purpurBuild string) (string, error) {
 	defer func() {
 		_ = res.Body.Close()
 	}()
-	destDir, err := os.MkdirTemp(os.TempDir(), "downloads-*")
-	if err != nil {
-		err = fmt.Errorf("creating temp dir: %v", err)
-		return "", err
-	}
-	out, err := os.CreateTemp(destDir, fmt.Sprintf("purpur-%s-%s.jar", mineVer, purpurBuild))
+	fileName := fmt.Sprintf("purpur-%s-%s.jar", mineVer, purpurBuild)
+
+	out, err := os.Create(filepath.Join(destDir, fileName))
 	if err != nil {
 		err = fmt.Errorf("creating temp file: %v", err)
 		return "", err

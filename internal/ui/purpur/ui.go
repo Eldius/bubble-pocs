@@ -10,19 +10,19 @@ import (
 
 var (
 	errorStyle = lipgloss.NewStyle().
-			Bold(true).
-			Foreground(lipgloss.Color("#0a0100")).
-			Background(lipgloss.Color("#eb4034"))
+		Bold(true).
+		Foreground(lipgloss.Color("#0a0100")).
+		Background(lipgloss.Color("#eb4034"))
 
 	defaultStyle = lipgloss.NewStyle().
-			Bold(false).
-			Foreground(lipgloss.Color("#FAFAFA")).
-			Background(lipgloss.Color("#000000"))
+		Bold(false).
+		Foreground(lipgloss.Color("#FAFAFA")).
+		Background(lipgloss.Color("#000000"))
 
 	activeCurrStyle = lipgloss.NewStyle().
-			Bold(true).
-			Foreground(lipgloss.Color("#03fc03")).
-			Background(lipgloss.Color("#7f8085"))
+		Bold(true).
+		Foreground(lipgloss.Color("#03fc03")).
+		Background(lipgloss.Color("#7f8085"))
 )
 
 func Start() error {
@@ -55,7 +55,7 @@ func Start() error {
 			return err
 		}
 		if answer {
-			f, err := c.DownloadPurpur(opts.MineVer, opts.PurpurVer)
+			f, err := c.DownloadPurpur(opts.MineVer, opts.PurpurVer, ".")
 			if err != nil {
 				err = fmt.Errorf("downloading file: %w", err)
 				return err
