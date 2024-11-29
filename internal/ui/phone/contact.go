@@ -2,7 +2,6 @@ package phone
 
 import (
 	"fmt"
-	"github.com/charmbracelet/bubbles/cursor"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
@@ -12,16 +11,16 @@ import (
 var (
 	focusedStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("205"))
 	blurredStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("240"))
-	cursorStyle  = focusedStyle
-	noStyle      = lipgloss.NewStyle()
+	//cursorStyle  = focusedStyle
+	//noStyle      = lipgloss.NewStyle()
 )
 
 type contactModel struct {
 	tea.Model
-	name     textinput.Model
-	email    textinput.Model
-	curr     int
-	currMode cursor.Mode
+	name  textinput.Model
+	email textinput.Model
+	curr  int
+	//currMode cursor.Mode
 }
 
 func newContactModel() *contactModel {
