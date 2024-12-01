@@ -22,8 +22,8 @@ github.com/cpuguy83/go-md2man/v2 v2.0.4/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46t
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc h1:U9qPSI2PIWSS1VwoXQT9A3Wy9MM3WgvqSxFWenqJduM=
 github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/eldius/initial-config-go v0.0.1 h1:e/0ygJLdip8sTb2vJZ6m9ckVGVCBgAwA2gxT3+BeOfM=
-github.com/eldius/initial-config-go v0.0.1/go.mod h1:nrnraUmbXVHWtYdA7MgbGBRmM1sbM2KD5Rb9EPgybWA=
+github.com/eldius/initial-config-go v0.0.3 h1:DGHVNAgNQ5PS69HEkxjKPfYL74dsBbg/OnxT2jTkti0=
+github.com/eldius/initial-config-go v0.0.3/go.mod h1:nrnraUmbXVHWtYdA7MgbGBRmM1sbM2KD5Rb9EPgybWA=
 github.com/erikgeiser/coninput v0.0.0-20211004153227-1c3628e74d0f h1:Y/CXytFA4m6baUTXGLOoWe4PQhGxaX0KpnayAqC48p4=
 github.com/erikgeiser/coninput v0.0.0-20211004153227-1c3628e74d0f/go.mod h1:vw97MGsxSvLiUE2X8qFplwetxpGLQrlU1Q9AUEIzCaM=
 github.com/erikgeiser/promptkit v0.9.0 h1:3qL1mS/ntCrXdb8sTP/ka82CJ9kEQaGuYXNrYJkWYBc=

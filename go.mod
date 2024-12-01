@@ -7,7 +7,7 @@ require (
 	github.com/charmbracelet/bubbles v0.20.0
 	github.com/charmbracelet/bubbletea v1.2.2
 	github.com/charmbracelet/lipgloss v1.0.0
-	github.com/eldius/initial-config-go v0.0.1
+	github.com/eldius/initial-config-go v0.0.3
 	github.com/erikgeiser/promptkit v0.9.0
 	github.com/gorcon/rcon v1.4.0
 	github.com/spf13/cobra v1.8.1
