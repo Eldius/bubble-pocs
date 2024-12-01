@@ -4,3 +4,4 @@ log:
   level: debug
   format: json
   output_to_file: execution.log
+  output_to_stdout: false

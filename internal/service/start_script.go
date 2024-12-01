@@ -60,9 +60,7 @@ func WithHeadless(headless bool) Option {
 	}
 }
 
-type StartScriptGenerator struct{}
-
-func (s StartScriptGenerator) Generate(opts ...Option) (string, error) {
+func Generate(opts ...Option) (string, error) {
 	options := &StartupOptions{}
 	for _, o := range opts {
 		o(options)

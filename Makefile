@@ -31,7 +31,7 @@ release-local:
 
 put:
 	echo 'rm ~/.bin/bubbles' | sftp $(USER)@$(TEST_SERVER)
-	echo 'put ./dist/bubbles_linux_arm64/bubbles .bin/' | sftp $(USER)@$(TEST_SERVER)
+	echo 'put ./dist/bubbles_linux_arm64_v8.0/bubbles .bin/' | sftp $(USER)@$(TEST_SERVER)
 
 console:
 	go run ./cmd/tui console \

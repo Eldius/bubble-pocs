@@ -7,7 +7,6 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/eldius/bubble-pocs/internal/client/purpur"
 	"github.com/eldius/bubble-pocs/internal/ui/utils"
-	"log/slog"
 	"strings"
 )
 
@@ -230,7 +229,6 @@ func (m *purpurVersionsModel) updatePurpurVerScreen(msg tea.Msg) (tea.Model, tea
 func setPurpurVersionsList(m *purpurVersionsModel, msg *purpur.GetPurpurVersionsResponse) (tea.Model, tea.Cmd) {
 	var versions []VersionInfo
 	for _, v := range msg.Builds.All {
-		slog.With("purpur_ver", v).Debug("oneMoreVer")
 		versions = append(versions, VersionInfo{
 			ver:    v,
 			latest: v == msg.Builds.Latest,
