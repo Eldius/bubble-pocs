@@ -12,19 +12,19 @@ import (
 
 var (
 	errorStyle = lipgloss.NewStyle().
-			Bold(true).
-			Foreground(lipgloss.Color("#0a0100")).
-			Background(lipgloss.Color("#eb4034"))
+		Bold(true).
+		Foreground(lipgloss.Color("#0a0100")).
+		Background(lipgloss.Color("#eb4034"))
 
 	defaultStyle = lipgloss.NewStyle().
-			Bold(false).
-			Foreground(lipgloss.Color("#FAFAFA")).
-			Background(lipgloss.Color("#000000"))
+		Bold(false).
+		Foreground(lipgloss.Color("#FAFAFA")).
+		Background(lipgloss.Color("#000000"))
 
 	activeCurrStyle = lipgloss.NewStyle().
-			Bold(true).
-			Foreground(lipgloss.Color("#03fc03")).
-			Background(lipgloss.Color("#7f8085"))
+		Bold(true).
+		Foreground(lipgloss.Color("#03fc03")).
+		Background(lipgloss.Color("#7f8085"))
 )
 
 func Start() error {
@@ -51,12 +51,12 @@ func Start() error {
 		}
 		fmt.Println(opts.String())
 
-		cfbox := confirmation.New("\tDo you want to download it?", confirmation.NewValue(false))
-		answer, err := cfbox.RunPrompt()
+		installConfirm := confirmation.New("\tDo you want to download it?", confirmation.NewValue(false))
+		installAnswer, err := installConfirm.RunPrompt()
 		if err != nil {
 			return err
 		}
-		if answer {
+		if installAnswer {
 			f, err := c.DownloadPurpur(opts.MineVer, opts.PurpurVer, ".")
 			if err != nil {
 				err = fmt.Errorf("downloading file: %w", err)
@@ -70,6 +70,14 @@ func Start() error {
 			}
 		}
 
+		importConfirm := confirmation.New("\tDo you want to import world from another profile?", confirmation.NewValue(false))
+		importAnswer, err := importConfirm.RunPrompt()
+		if err != nil {
+			return err
+		}
+		if importAnswer {
+			fmt.Println(defaultStyle.Render("\n\n\tImporting from another world..."))
+		}
 	}
 	return nil
 }

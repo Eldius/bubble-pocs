@@ -25,13 +25,8 @@ func Start(ctx context.Context, host string, port int, password string) error {
 		_ = conn.Close()
 	}()
 
-	//response, err := conn.Execute("help")
-	//if err != nil {
-	//	err = fmt.Errorf("could not get help: %w", err)
-	//	return err
-	//}
-	//
-	//fmt.Println(response)
+	cmdBuffSize := 10
+	cmdBuff := make([]string, cmdBuffSize)
 
 	reader := bufio.NewReader(os.Stdin)
 	for {
@@ -57,6 +52,11 @@ func Start(ctx context.Context, host string, port int, password string) error {
 
 		log.With("response", resp).Debug("ExecutingCommand")
 		fmt.Println(resp)
+		buffLength := len(cmdBuff)
+		if buffLength >= cmdBuffSize {
+			cmdBuff = append(cmdBuff[1:], command)
+		}
+		cmdBuff = append(cmdBuff[:], command)
 	}
 
 	return nil
